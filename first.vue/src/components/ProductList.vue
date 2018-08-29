@@ -1,10 +1,12 @@
 <template>
-    <ul>
-        <li v-for="(product, index) in products" :key="index">
-            <span>{{index}} - {{ product.title }} - {{ product.price }}</span>
-            <buy-btn :id="index"></buy-btn>
-        </li>
-    </ul>
+    <div>
+        <ul>
+            <li v-for="(product, index) in products" :key="index">
+                <span>{{index}} - <router-link :to="index | productLink">{{ product.title }}</router-link> - {{ product.price }}</span>
+                <buy-btn :id="index" redirect="/cart"></buy-btn>
+            </li>
+        </ul>
+    </div>
 </template>
 <script>
 import products from '../store/products';
@@ -17,6 +19,11 @@ export default {
     },
     components: {
         BuyBtn
+    },
+    filters: {
+        productLink(val) {
+            return '/product/' + val;
+        }
     }
 }
 </script>
