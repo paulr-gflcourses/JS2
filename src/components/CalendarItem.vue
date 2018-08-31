@@ -1,9 +1,13 @@
 <template>
     <div>
+        <hr/>
+        <p>Month:</p>
+        <p>{{ showedDate | formatDate}}</p>
+        <p>
+        <button @click="prevMonth">prev month</button>
         <button @click="nextMonth">next month</button>
+        </p>
     <table  border="1px"> 
-
-        
 
         <tr>
             <td>Mon</td><td>Tue</td><td>Wed</td><td>Thu</td><td>Fri</td><td>Sat</td><td>Sun</td>
@@ -17,7 +21,8 @@
             v-for="(day, indexDay) in week" 
             :day="day"
         :key="indexDay"
-        v-on:show-tasks="showTasks"
+       
+        v-on:select-day="selectDay"
         >
         </day-item>
 
@@ -31,48 +36,74 @@
     </div>
 </template>
 <script>
-import calendar from '../store/calendar';
+import calendar from "../store/calendar";
 
-import DayItem from './DayItem';
+import DayItem from "./DayItem";
 
 export default {
-    data: function () {
-  return {
-    tasks: '',
-    month: calendar.currentMonth
-  }
-},
-    components: {
-        DayItem
+  data: function() {
+    return {
+      tasks: "",
+      month: calendar.currentMonthDays
+    };
+  },
+  components: {
+    DayItem
+  },
+
+  computed: {
+    showedDate() {
+      return calendar.currentMonthDate;
     },
-    computed: {
-        /*month() {
-            return calendar.currentMonth;
-        },*/
-        ar() {
-            return calendar.compAr;
-        },
+
+
+  },
+
+  filters: {
+    formatDate(date) {
+      let options = { day: "2-digit", month: "short", year: "numeric" };
+      return date.toLocaleDateString("en-US", options);
+    }
+  },
+
+  methods: {
+    selectDay(date) {
+      calendar.selectedDate = date;
+      calendar.currentMonthDate = date;
+      this.tasks = "Tasks: task1, task2 "+date;
 
     },
-    methods: {
-         showTasks(){
-             this.tasks="Tasks: task1, task2";
-    
-        },
-        nextMonth(){
-             calendar.nextMonth()
-             this.month = calendar.currentMonth
-  
-        }
+    nextMonth() {
+      calendar.currentMonthDate = new Date(calendar.currentMonthDate);
+      calendar.currentMonthDate.setMonth(
+        calendar.currentMonthDate.getMonth() + 1
+      );
+      this.month = calendar.currentMonthDays;
+    },
+    prevMonth() {
+      calendar.currentMonthDate = new Date(calendar.currentMonthDate);
+      calendar.currentMonthDate.setMonth(
+        calendar.currentMonthDate.getMonth() - 1
+      );
+      this.month = calendar.currentMonthDays;
     }
-}
+  }
+};
 </script>
 
 <style>
-td{
-    border: 1px solid;
+td {
+  border: 1px solid;
 }
-td:hover{
-    background: rgb(75, 75, 231)
+.day:hover {
+  background: rgb(157, 157, 224);
 }
+
+.selected.day:hover,
+.selected{
+    background: red;
+}
+
+
+
 </style>
