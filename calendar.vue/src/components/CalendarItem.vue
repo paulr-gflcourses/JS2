@@ -69,7 +69,8 @@ export default {
     selectDay(date) {
       calendar.selectedDate = date;
       calendar.currentMonthDate = date;
-      this.tasks = "Tasks: task1, task2 "+date;
+
+      this.tasks = calendar.tasks;
 
     },
     nextMonth() {
@@ -118,12 +119,14 @@ export default {
 
 td {
   border: 1px solid rgb(157, 157, 224);
+  text-align: center;
 }
 
 .day{
   /*background: rgb(39, 0, 131);*/
   background: rgb(189, 179, 207);
   padding: 15px;
+  text-align: center;
 }
 .day:hover {
   background: rgb(153, 153, 207);

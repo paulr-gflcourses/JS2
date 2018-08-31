@@ -39,8 +39,8 @@ export default {
 
 
        isDaySelected(){
-        return calendar.isEqualsDays(this.date, calendar.selectedDate) || false;
-    }
+        return calendar.isEqualsDays(this.date, calendar.selectedDate);
+        }
         
     },
     methods: {

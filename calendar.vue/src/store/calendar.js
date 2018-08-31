@@ -16,11 +16,11 @@ export default new Vue({
         },
         {
           date: new Date(2018, 7, 4),
-          task: ['one task', 'two task']
+          task: ['one task']
         },
         {
           date: new Date(2018, 7, 8),
-          task: ['one task', 'two task']
+          task: ['one task', 'two task', 'three task']
         },
     ]
 
