@@ -6,14 +6,30 @@ export default new Vue({
     return {
       currentMonthDate: new Date(),
       today: new Date(),
-      selectedDate: ''
+      selectedDate: '',
+
+
+      tasks: [
+        {
+          date: new Date(2018, 7, 2),
+          task: ['one task', 'two task']
+        },
+        {
+          date: new Date(2018, 7, 4),
+          task: ['one task', 'two task']
+        },
+        {
+          date: new Date(2018, 7, 8),
+          task: ['one task', 'two task']
+        },
+    ]
 
     }
   },
 
 
   computed: {
-    currentMonthDays: function () {
+    currentMonthDays() {
       let d = this.currentMonthDate;
       let year = d.getFullYear();
       let month = d.getMonth();
@@ -38,7 +54,9 @@ export default new Vue({
         weeks.push(days.slice(i * 7, i * 7 + 7));
       }
       return weeks;
-    }
+    },
+
+    
   },
   methods: {
     getLocalDay: function (date) {

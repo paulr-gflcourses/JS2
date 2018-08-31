@@ -1,12 +1,11 @@
 <template>
-    <div>
+    <div class="calendar">
         <hr/>
-        <p>Month:</p>
-        <p>{{ showedDate | formatDate}}</p>
-        <p>
-        <button @click="prevMonth">prev month</button>
-        <button @click="nextMonth">next month</button>
-        </p>
+        <div class="cal-head">
+          <button class="prev-month" @click="prevMonth"> prev </button>
+          <span class="show-date">{{ showedDate | formatDate}}</span>
+          <button class="next-month" @click="nextMonth"> next </button>
+        </div>
     <table  border="1px"> 
 
         <tr>
@@ -92,17 +91,49 @@ export default {
 </script>
 
 <style>
+
+.calendar{
+  /*background: rgb(17, 2, 53);*/
+    width: 350px;
+    margin-left: auto;
+    margin-right: auto;
+ /* color: #fff;*/
+}
+
+
+.prev-month{
+  float: left;
+}
+
+.next-month{
+  float: right;
+}
+
+.show-date{
+  border: 1px solid rgb(157, 157, 224);
+  text-align:  center;
+  margin-left: 26%;
+
+}
+
 td {
-  border: 1px solid;
+  border: 1px solid rgb(157, 157, 224);
+}
+
+.day{
+  /*background: rgb(39, 0, 131);*/
+  background: rgb(189, 179, 207);
+  padding: 15px;
 }
 .day:hover {
-  background: rgb(157, 157, 224);
+  background: rgb(153, 153, 207);
 }
 
 .selected.day:hover,
 .selected{
-    background: red;
+    background: rgb(103, 82, 128);
 }
+
 
 
 

@@ -18,11 +18,17 @@ export default {
     },
 
     computed: {
+
         date(){
            let d = new Date(calendar.currentMonthDate);
            d.setDate(this.day);
            return d;
        },
+
+       tasks(){
+        
+       },
+
        isCurrentDay(){
            //return (calendar.today == this.date)
            return calendar.isEqualsDays(calendar.today, this.date)
@@ -57,8 +63,8 @@ export default {
 
 .currentDay{
     font-weight: bold;
-    border: 2px solid;
-    color: #000;
+    border: 3px solid;
+    color: rgb(30, 8, 75);
 }
 
 
