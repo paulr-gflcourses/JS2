@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <div>
+    <!--div>
       <p>runPath: {{ runPath }}</p>
       <p>currentPath: {{ currentPath }}</p>
       <p>fromPath: {{ fromPath }}</p>
       <p>params: {{ params }}</p>
     </div>
-    <NavigationBar/>
+    <NavigationBar/-->
     <transition name="fade" mode="out-in">
       <router-view/>
     </transition>

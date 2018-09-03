@@ -4,33 +4,59 @@
         <div class="cal-head">
           <button class="prev-month" @click="prevMonth"> prev </button>
           <span class="show-date">{{ showedDate | formatDate}}</span>
-          <button class="next-month" @click="nextMonth"> next </button>
+           <button class="next-month" @click="nextMonth"> next </button>
+          <div>
+          Year
+          <input type="number"/>
+
+          Month
+          <select name="" id=""></select>
+          </div>
+
+         
         </div>
+
+        
+
     <table  border="1px"> 
 
         <tr>
             <td>Mon</td><td>Tue</td><td>Wed</td><td>Thu</td><td>Fri</td><td>Sat</td><td>Sun</td>
         </tr>
 
+        
         <tr
          v-for="(week, indexWeek) in month" 
         :key="indexWeek">
 
-            <day-item
+
+        <day-item
             v-for="(day, indexDay) in week" 
             :day="day"
         :key="indexDay"
-       
         v-on:select-day="selectDay"
         >
         </day-item>
+      
 
         </tr>
+       
+
     </table>
 
+
+
     <div>
-        {{ tasks }}
+      <transition name="fade">
+      <ol v-if="tasks">
+        <h2>Tasks:</h2>
+        <li v-for="(task,index) in tasks" :key="index">{{task}}</li>
+      </ol>
+      </transition>
+
     </div>
+
+    
 
     </div>
 </template>
@@ -53,9 +79,7 @@ export default {
   computed: {
     showedDate() {
       return calendar.currentMonthDate;
-    },
-
-
+    }
   },
 
   filters: {
@@ -66,12 +90,11 @@ export default {
   },
 
   methods: {
-    selectDay(date) {
+    selectDay(date, tasks) {
       calendar.selectedDate = date;
       calendar.currentMonthDate = date;
 
-      this.tasks = calendar.tasks;
-
+      this.tasks = tasks;
     },
     nextMonth() {
       calendar.currentMonthDate = new Date(calendar.currentMonthDate);
@@ -92,29 +115,26 @@ export default {
 </script>
 
 <style>
-
-.calendar{
+.calendar {
   /*background: rgb(17, 2, 53);*/
-    width: 350px;
-    margin-left: auto;
-    margin-right: auto;
- /* color: #fff;*/
+  width: 350px;
+  margin-left: auto;
+  margin-right: auto;
+  /* color: #fff;*/
 }
 
-
-.prev-month{
+.prev-month {
   float: left;
 }
 
-.next-month{
+.next-month {
   float: right;
 }
 
-.show-date{
+.show-date {
   border: 1px solid rgb(157, 157, 224);
-  text-align:  center;
+  text-align: center;
   margin-left: 26%;
-
 }
 
 td {
@@ -122,7 +142,7 @@ td {
   text-align: center;
 }
 
-.day{
+.day {
   /*background: rgb(39, 0, 131);*/
   background: rgb(189, 179, 207);
   padding: 15px;
@@ -133,11 +153,15 @@ td {
 }
 
 .selected.day:hover,
-.selected{
-    background: rgb(103, 82, 128);
+.selected {
+  background: rgb(103, 82, 128);
 }
 
-
-
-
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+  opacity: 0;
+}
 </style>

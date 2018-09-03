@@ -1,72 +1,100 @@
 <template>
-    <td class="day" v-bind:class="{ currentDay: isCurrentDay, selected: isDaySelected}"  v-on:click="$emit('select-day',date)"> 
-       {{day | deleteZeros}}
+    <transition name="fade">
+    <td class="day" 
+    v-bind:class="{ currentDay: isCurrentDay, 
+    selected: isDaySelected, hasTask: isTaskExists, notAvaiable: isNotAvaiable}"  
+    v-on:click="$emit('select-day', date, tasks)"> 
+      <!-- {{day | deleteZeros}} -->
+      {{ date | formatDate }} 
+
+     <!-- {{day}} -->
     </td>
+    </transition>
 </template>
 
 <script>
-import calendar from '../store/calendar';
+import calendar from "../store/calendar";
 
 export default {
-    props: ['day'],
+  props: ["day"],
 
-    data(){
-        return {
-          
-            
-        }
+  data() {
+    return {};
+  },
+
+  computed: {
+    date() {
+      let d = new Date(calendar.currentMonthDate);
+      d.setDate(this.day);
+      return d;
     },
 
-    computed: {
-
-        date(){
-           let d = new Date(calendar.currentMonthDate);
-           d.setDate(this.day);
-           return d;
-       },
-
-       tasks(){
-        
-       },
-
-       isCurrentDay(){
-           //return (calendar.today == this.date)
-           return calendar.isEqualsDays(calendar.today, this.date)
-       },
-       calendarCurrentDay(){
-           return calendar.today
-       },
-
-
-       isDaySelected(){
-        return calendar.isEqualsDays(this.date, calendar.selectedDate);
-        }
-        
+    tasks() {
+      return calendar.getDayTasks(this.date);
     },
-    methods: {
-       
 
+    isCurrentDay() {
+      //return (calendar.today == this.date)
+      return calendar.isEqualsDays(calendar.today, this.date);
     },
-    filters:{
-        deleteZeros: function(day){
-            if (day===0){
-                return "";
-            }else{
-                return day;
-            }
-        }
+    calendarCurrentDay() {
+      return calendar.today;
+    },
+
+    isDaySelected() {
+      return calendar.isEqualsDays(this.date, calendar.currentMonthDate);
+    },
+
+    isTaskExists() {
+      if (this.tasks) {
+        return true;
+      }
+      return false;
+    },
+
+    isNotAvaiable() {
+        return (! calendar.isEqualsMonth(this.date,calendar.currentMonthDate))
+      //return this.day == "0";
     }
-}
+  },
+  methods: {},
+  filters: {
+    deleteZeros: function(day) {
+      if (day === 0) {
+        return "";
+      } else {
+        return day;
+      }
+    },
+
+    formatDate(date){
+        return date.getDate();
+    }
+  }
+};
 </script>
 
 <style>
-
-.currentDay{
-    font-weight: bold;
-    border: 3px solid;
-    color: rgb(30, 8, 75);
+.currentDay {
+  font-weight: bold;
+  border: 4px solid rgb(57, 6, 124);
+  color: rgb(30, 8, 75);
 }
 
+.hasTask {
+  background: rgb(206, 189, 172);
+}
 
+.notAvaiable {
+  background: rgb(228, 226, 231);
+  color: rgb(148, 144, 156);
+}
 
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+  opacity: 0;
+}
 </style>
