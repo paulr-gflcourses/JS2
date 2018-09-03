@@ -6,11 +6,28 @@
           <span class="show-date">{{ showedDate | formatDate}}</span>
            <button class="next-month" @click="nextMonth"> next </button>
           <div>
-          Year
-          <input type="number"/>
 
-          Month
-          <select name="" id=""></select>
+            Month
+            <select name="" id="">
+            <option>January</option>
+             <option>February</option>
+              <option>March</option>
+               <option>April</option>
+                <option>May</option>
+                 <option>June</option>
+                 <option>July</option>
+                 <option>August</option>
+                 <option>September</option>
+                 <option>October</option>
+                 <option>November</option>
+                 <option>December</option>
+
+          </select>
+          Year
+          <input type="number" v-model="year"/>
+
+          
+          
           </div>
 
          
@@ -26,7 +43,7 @@
 
         
         <tr
-         v-for="(week, indexWeek) in month" 
+         v-for="(week, indexWeek) in daysArray" 
         :key="indexWeek">
 
 
@@ -34,8 +51,7 @@
             v-for="(day, indexDay) in week" 
             :day="day"
         :key="indexDay"
-        v-on:select-day="selectDay"
-        >
+        v-on:select-day="selectDay">
         </day-item>
       
 
@@ -60,6 +76,8 @@
 
     </div>
 </template>
+
+
 <script>
 import calendar from "../store/calendar";
 
@@ -69,9 +87,13 @@ export default {
   data: function() {
     return {
       tasks: "",
-      month: calendar.currentMonthDays
+      //daysArray: calendar.currentMonthDays,
+      day: calendar.today.getDate(),
+      month: calendar.today.getMonth(),
+      year: calendar.today.getFullYear()
     };
   },
+
   components: {
     DayItem
   },
@@ -79,6 +101,10 @@ export default {
   computed: {
     showedDate() {
       return calendar.currentMonthDate;
+    },
+
+    daysArray(){
+      return calendar.currentMonthDays(this.year, this.month);
     }
   },
 
@@ -97,18 +123,23 @@ export default {
       this.tasks = tasks;
     },
     nextMonth() {
+      /*
       calendar.currentMonthDate = new Date(calendar.currentMonthDate);
       calendar.currentMonthDate.setMonth(
         calendar.currentMonthDate.getMonth() + 1
       );
-      this.month = calendar.currentMonthDays;
+      */
+      this.month++;
+      this.daysArray = calendar.currentMonthDays(this.year, this.month);
     },
     prevMonth() {
+      /*
       calendar.currentMonthDate = new Date(calendar.currentMonthDate);
       calendar.currentMonthDate.setMonth(
         calendar.currentMonthDate.getMonth() - 1
-      );
-      this.month = calendar.currentMonthDays;
+      );*/
+      this.month--;
+      this.daysArray = calendar.currentMonthDays(this.year, this.month);
     }
   }
 };

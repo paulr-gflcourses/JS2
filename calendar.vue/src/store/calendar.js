@@ -29,8 +29,10 @@ export default new Vue({
 
 
   computed: {
-    currentMonthDays() {
-      let d = this.currentMonthDate;
+    currentMonthDays(yearDate, monthDate) {
+      //let d = this.currentMonthDate;
+      let d = new Date(yearDate, monthDate, 1);
+
       let year = d.getFullYear();
       let month = d.getMonth();
 
