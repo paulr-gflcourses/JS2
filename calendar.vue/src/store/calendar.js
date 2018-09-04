@@ -11,6 +11,23 @@ export default new Vue({
 
       tasks: [
         {
+          date: new Date(2018, 0, 2),
+          task: ['one task for 8', 'two task for 8', 'three task for 8']
+        },
+        {
+          date: new Date(2018, 1, 3),
+          task: ['one task for 8', 'two task for 8', 'three task for 8']
+        },
+        {
+          date: new Date(2018, 2, 4),
+          task: ['one task for 8', 'two task for 8', 'three task for 8']
+        },
+        {
+          date: new Date(2018, 3, 5),
+          task: ['one task for 8', 'two task for 8', 'three task for 8']
+        },
+
+        {
           date: new Date(2018, 7, 2),
           task: ['2 - to do one task', '2 - to do two task']
         },
@@ -22,6 +39,7 @@ export default new Vue({
           date: new Date(2018, 7, 8),
           task: ['one task for 8', 'two task for 8', 'three task for 8']
         },
+        
     ]
 
     }
@@ -29,6 +47,12 @@ export default new Vue({
 
 
   computed: {
+    
+
+    
+  },
+  methods: {
+
     currentMonthDays(yearDate, monthDate) {
       //let d = this.currentMonthDate;
       let d = new Date(yearDate, monthDate, 1);
@@ -44,7 +68,7 @@ export default new Vue({
 
 
       for (let i = 1-firstDayOfWeek; i < nDays+(6-lastDayOfWeek) +1; i++) {
-        days.push(i);
+        days.push(new Date(yearDate, monthDate, i));
       }
  
 
@@ -55,9 +79,6 @@ export default new Vue({
       return weeks;
     },
 
-    
-  },
-  methods: {
     getLocalDay: function (date) {
       var day = date.getDay();
 

@@ -16,18 +16,18 @@
 import calendar from "../store/calendar";
 
 export default {
-  props: ["day"],
+  props: ["date"],
 
   data() {
     return {};
   },
 
   computed: {
-    date() {
+    /*date() {
       let d = new Date(calendar.currentMonthDate);
       d.setDate(this.day);
       return d;
-    },
+    },*/
 
     tasks() {
       return calendar.getDayTasks(this.date);
@@ -42,7 +42,7 @@ export default {
     },
 
     isDaySelected() {
-      return calendar.isEqualsDays(this.date, calendar.currentMonthDate);
+      return calendar.isEqualsDays(this.date, calendar.selectedDate);
     },
 
     isTaskExists() {
@@ -59,16 +59,9 @@ export default {
   },
   methods: {},
   filters: {
-    deleteZeros: function(day) {
-      if (day === 0) {
-        return "";
-      } else {
-        return day;
-      }
-    },
-
     formatDate(date){
-        return date.getDate();
+      return date.getDate()
+        //return date.getDate()+"."+(date.getMonth()+1)+"."+date.getFullYear();
     }
   }
 };

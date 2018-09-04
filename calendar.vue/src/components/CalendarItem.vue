@@ -8,19 +8,19 @@
           <div>
 
             Month
-            <select name="" id="">
-            <option>January</option>
-             <option>February</option>
-              <option>March</option>
-               <option>April</option>
-                <option>May</option>
-                 <option>June</option>
-                 <option>July</option>
-                 <option>August</option>
-                 <option>September</option>
-                 <option>October</option>
-                 <option>November</option>
-                 <option>December</option>
+            <select name="" id="" v-model="month">
+            <option value="0">January</option>
+             <option  value="1">February</option>
+              <option  value="2">March</option>
+               <option  value="3">April</option>
+                <option value="4">May</option>
+                 <option value="5">June</option>
+                 <option value="6">July</option>
+                 <option value="7">August</option>
+                 <option value="8">September</option>
+                 <option value="9">October</option>
+                 <option value="10">November</option>
+                 <option value="11">December</option>
 
           </select>
           Year
@@ -48,13 +48,12 @@
 
 
         <day-item
-            v-for="(day, indexDay) in week" 
-            :day="day"
-        :key="indexDay"
+            v-for="(date,index) in week" 
+            :date="date"
+        :key="index"
         v-on:select-day="selectDay">
         </day-item>
-      
-
+    
         </tr>
        
 
@@ -63,6 +62,7 @@
 
 
     <div>
+
       <transition name="fade">
       <ol v-if="tasks">
         <h2>Tasks:</h2>
@@ -93,17 +93,59 @@ export default {
       year: calendar.today.getFullYear()
     };
   },
+  watch: {
+    day: function(val) {
+      calendar.currentMonthDate.setDate(val);
+      this.day = calendar.currentMonthDate.getDate();
+    },
+    month: function(val) {
+      calendar.currentMonthDate.setMonth(val);
+      this.month = calendar.currentMonthDate.getMonth();
+      this.year = calendar.currentMonthDate.getFullYear();
+    },
+    year: function(val) {
+      calendar.currentMonthDate.setFullYear(val);
+      this.year = calendar.currentMonthDate.getFullYear();
+    }
+  },
 
   components: {
     DayItem
   },
 
   computed: {
+    /* day: {
+      get: function() {
+        return calendar.currentMonthDate.getDate();
+      },
+
+      set: function(newValue) {
+        calendar.currentMonthDate.setDate(newValue);
+      }
+    },
+    month: {
+       get: function() {
+        return calendar.currentMonthDate.getMonth();
+      },
+
+      set: function(newValue) {
+        calendar.currentMonthDate.setMonth(newValue);
+      }
+    },
+    year: {
+       get: function() {
+        return calendar.currentMonthDate.getFullYear();
+      },
+
+      set: function(newValue) {
+        calendar.currentMonthDate.setFullYear(newValue);
+      }
+    },*/
     showedDate() {
       return calendar.currentMonthDate;
     },
 
-    daysArray(){
+    daysArray() {
       return calendar.currentMonthDays(this.year, this.month);
     }
   },
@@ -118,28 +160,19 @@ export default {
   methods: {
     selectDay(date, tasks) {
       calendar.selectedDate = date;
-      calendar.currentMonthDate = date;
+      //calendar.currentMonthDate = date;
 
       this.tasks = tasks;
     },
     nextMonth() {
-      /*
-      calendar.currentMonthDate = new Date(calendar.currentMonthDate);
-      calendar.currentMonthDate.setMonth(
-        calendar.currentMonthDate.getMonth() + 1
-      );
-      */
-      this.month++;
-      this.daysArray = calendar.currentMonthDays(this.year, this.month);
+
+      this.month = this.month + 1;
+  
     },
     prevMonth() {
-      /*
-      calendar.currentMonthDate = new Date(calendar.currentMonthDate);
-      calendar.currentMonthDate.setMonth(
-        calendar.currentMonthDate.getMonth() - 1
-      );*/
-      this.month--;
-      this.daysArray = calendar.currentMonthDays(this.year, this.month);
+
+      this.month = this.month - 1;
+
     }
   }
 };
