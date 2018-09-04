@@ -7,9 +7,9 @@ export default new Vue({
       currentMonthDate: new Date(),
       today: new Date(),
       selectedDate: '',
+      tasks: [],
 
-
-      tasks: [
+      defaultTasks: [
         {
           date: new Date(2018, 0, 2),
           task: ['one task for 8', 'two task for 8', 'three task for 8']
@@ -46,6 +46,24 @@ export default new Vue({
   },
 
 
+  created(){
+    //let localTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+    let localTasks = JSON.parse(localStorage.getItem('tasks') || JSON.stringify(this.defaultTasks));
+    //this.tasks = localTasks || this.defaultTasks;
+    localTasks.forEach(element => {
+      element.date = new Date(element.date)
+    });
+    this.tasks = localTasks || this.defaultTasks;
+  },
+
+  watch: {
+    tasks: {
+      handler: function (tasks) {
+        localStorage.setItem('tasks', JSON.stringify(this.tasks || []));
+      },
+      deep: true
+  }
+},
   computed: {
     
 

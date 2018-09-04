@@ -63,12 +63,23 @@
 
     <div>
 
-      <transition name="fade">
+      
+      
+
+
+        <div v-if="isDaySelected">
+          <h3>Add task</h3>
+          Task name
+          <input type="text" ref="taskName" name="" />
+          <button @click="saveTask">Save</button>
+        </div>
+      
       <ol v-if="tasks">
         <h2>Tasks:</h2>
         <li v-for="(task,index) in tasks" :key="index">{{task}}</li>
       </ol>
-      </transition>
+
+    
 
     </div>
 
@@ -141,12 +152,17 @@ export default {
         calendar.currentMonthDate.setFullYear(newValue);
       }
     },*/
+ 
     showedDate() {
       return calendar.currentMonthDate;
     },
 
     daysArray() {
       return calendar.currentMonthDays(this.year, this.month);
+    },
+
+    isDaySelected(){
+      return calendar.selectedDate;
     }
   },
 
@@ -160,19 +176,33 @@ export default {
   methods: {
     selectDay(date, tasks) {
       calendar.selectedDate = date;
-      //calendar.currentMonthDate = date;
+      calendar.currentMonthDate = date;
 
       this.tasks = tasks;
     },
     nextMonth() {
-
       this.month = this.month + 1;
-  
     },
     prevMonth() {
-
       this.month = this.month - 1;
+    },
 
+    saveTask(){
+      let taskName = this.$refs.taskName.value;
+      let taskList = calendar.getDayTasks(calendar.selectedDate);
+      if (taskList){
+        taskList.push(taskName);
+      }else{
+        calendar.tasks.push({
+       date: new Date(calendar.selectedDate), 
+       task:[taskName]
+       });
+
+      //this.tasks=[taskName]
+      
+      }
+      this.$refs.taskName.value="";
+      
     }
   }
 };
