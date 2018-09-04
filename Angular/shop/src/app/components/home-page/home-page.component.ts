@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ProductsService } from '../../services/products.service';
 
 @Component({
   selector: 'app-home-page',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomePageComponent implements OnInit {
   title = 'Home page sggdfgdfg dfg d fg';
-  list = [
+  /* list = [
     'sdfsfsdf',
     'sdfsfsdf',
     'sdfsfsdf',
@@ -16,12 +17,20 @@ export class HomePageComponent implements OnInit {
     'sdfsfsdf',
     'sdfsfsdf',
     'sdfsfsdf'
-  ];
+  ]; */
 
-  constructor() { }
+  constructor(protected products: ProductsService) { }
 
   ngOnInit() {
     this.title = 'asdfasdf';
+  }
+
+  get list() {
+    return this.products.list;
+  }
+
+  public buy(id) {
+    alert('BUY: ' + id);
   }
 
 }

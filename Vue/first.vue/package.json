@@ -1,8 +1,8 @@
 {
-  "name": "calendar.vue",
+  "name": "first.vue",
   "version": "1.0.0",
   "description": "A Vue.js project",
-  "author": "paulr-gflcourses <paulgerald123@gmail.com>",
+  "author": "",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
