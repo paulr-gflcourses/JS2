@@ -2,27 +2,25 @@
     <div>
        <div class="calendar">
         <div class="cal-head">
-          <button class="prev-month" @click="prevMonth"> &larr; </button>
+          <button class="prev-month" @click="month--"> &larr; </button>
           <span class="show-date">{{ showedDate | formatDate}}</span>
-           <button class="next-month" @click="nextMonth"> &rarr; </button>
-
+          <button class="next-month" @click="month++"> &rarr; </button>
 
           <p>
-           <label for="month">Month</label>
+            <label for="month">Month</label>
             <select name="" id="month" v-model="month">
-            <option value="0">January</option>
-             <option  value="1">February</option>
+              <option value="0">January</option>
+              <option  value="1">February</option>
               <option  value="2">March</option>
-               <option  value="3">April</option>
-                <option value="4">May</option>
-                 <option value="5">June</option>
-                 <option value="6">July</option>
-                 <option value="7">August</option>
-                 <option value="8">September</option>
-                 <option value="9">October</option>
-                 <option value="10">November</option>
-                 <option value="11">December</option>
-
+              <option  value="3">April</option>
+              <option value="4">May</option>
+              <option value="5">June</option>
+              <option value="6">July</option>
+              <option value="7">August</option>
+              <option value="8">September</option>
+              <option value="9">October</option>
+              <option value="10">November</option>
+              <option value="11">December</option>
             </select>
             <label for="year">Year</label>
             <input type="number" v-model="year"/>
@@ -52,31 +50,36 @@
 
     </div>
 
+    
     <div class="task-panel" v-if="dayChecked">
 
-        <div>
-          
-          <h3>Add task</h3>
-          Task name
-          <input type="text" ref="taskName" name="" />
+
+      <div class="task-form">
+          <h3>Add new task</h3>
+          <label for="taskName">Task name</label>
+          <input type="text" id="taskName" ref="taskName" name="" />
           <button @click="saveTask">Save</button>
-        </div>
-      
-      
+      </div>
+        
+        
+      <div class="task-list">
       <p v-if="!tasks">No tasks for selected day ({{dayChecked | formatDateFull}}).</p>
       <div v-else>
         <h2>Tasks</h2>
         <p>Date - {{dayChecked | formatDateFull}}</p>
         <ol>
           <li v-for="(task,index) in tasks" :key="index">{{task}}
-           
           </li>
         </ol>
       </div>
-    
+      
+      </div>
+  
+      
 
     </div>
 
+  
     
 
     </div>
@@ -121,15 +124,12 @@ export default {
     showedDate() {
       return calendar.currentMonthDate;
     },
-    dayChecked(){
+    dayChecked() {
       return calendar.selectedDate;
     },
-
     daysArray() {
       return calendar.currentMonthDays(this.year, this.month);
-    },
-
-    
+    }
   },
 
   filters: {
@@ -149,41 +149,30 @@ export default {
       this.day = date.getDate();
       this.month = date.getMonth();
       this.year = date.getFullYear();
-      this.tasks =  calendar.getDayTasks(calendar.selectedDate);
-    },
-    nextMonth() {
-      this.month = this.month + 1;
-    },
-    prevMonth() {
-      this.month = this.month - 1;
+      this.tasks = calendar.getDayTasks(date);
     },
 
-    saveTask(){
+    saveTask() {
       let taskName = this.$refs.taskName.value;
       let taskList = calendar.getDayTasks(calendar.selectedDate);
-      if (taskList){
+      if (taskList) {
         taskList.push(taskName);
-      }else{
+      } else {
         calendar.tasks.push({
-       date: new Date(calendar.selectedDate), 
-       task:[taskName]
-       });
-       this.tasks =  calendar.getDayTasks(calendar.selectedDate);
-      
+          date: new Date(calendar.selectedDate),
+          task: [taskName]
+        });
+        this.tasks = calendar.getDayTasks(calendar.selectedDate);
       }
-     
-      this.$refs.taskName.value="";
-      
-    },
 
-
+      this.$refs.taskName.value = "";
+    }
   }
 };
 </script>
 
 <style>
 .calendar {
-
   width: 355px;
   margin-left: 40px;
   margin-top: 40px;
@@ -192,10 +181,20 @@ export default {
   float: left;
 }
 
-.task-panel{
+.task-panel {
   margin-left: 50px;
-  margin-top: 50px;
+  padding: 5px;
   float: left;
+}
+
+.task-list {
+  border: 1px solid rgb(40, 40, 70);
+  background: rgb(239, 233, 190);
+  padding: 20px;
+}
+
+.task-form {
+  padding: 20px;
 }
 
 .prev-month {
@@ -208,7 +207,7 @@ export default {
 
 .show-date {
   border: 1px solid rgb(40, 40, 70);
- background: rgb(228, 226, 231);
+  background: rgb(228, 226, 231);
   text-align: center;
   margin-left: 26%;
   padding: 5px;
@@ -225,7 +224,7 @@ td {
   text-align: center;
 }
 
-.restDay{
+.restDay {
   background: rgb(214, 182, 200);
 }
 
@@ -248,8 +247,6 @@ td {
   background: rgb(153, 153, 207);
 }
 
-
-
 .selected.day:hover,
 .selected {
   background: rgb(103, 82, 128);
@@ -257,9 +254,10 @@ td {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s;
+  transition: opacity 0.3s;
 }
-.fade-enter, .fade-leave-to {
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }
 </style>

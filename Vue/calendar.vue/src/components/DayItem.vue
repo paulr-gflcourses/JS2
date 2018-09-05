@@ -1,13 +1,13 @@
 <template>
 
     <td class="day" 
-    v-bind:class="{ 
+      v-bind:class="{ 
       restDay: isRestDay,
       currentDay: isCurrentDay, 
-     hasTask: isTaskExists, 
-     notAvaiable: isNotAvaiable, 
-     selected: isDaySelected}"  
-    v-on:click="$emit('select-day', date, tasks)"> 
+      hasTask: isTaskExists, 
+      notAvaiable: isNotAvaiable, 
+      selected: isDaySelected}"  
+      v-on:click="$emit('select-day', date, tasks)"> 
 
       {{ date | formatDate }} 
 
@@ -41,9 +41,6 @@ export default {
     isCurrentDay() {
       return calendar.isEqualsDays(calendar.today, this.date);
     },
-    calendarCurrentDay() {
-      return calendar.today;
-    },
 
     isDaySelected() {
       return calendar.isEqualsDays(this.date, calendar.selectedDate);
@@ -60,7 +57,7 @@ export default {
       return !calendar.isEqualsMonth(this.date, calendar.currentMonthDate);
     }
   },
-  methods: {},
+
   filters: {
     formatDate(date) {
       return date.getDate();

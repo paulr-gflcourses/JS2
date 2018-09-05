@@ -14,8 +14,6 @@ import { CartService } from './services/cart.service';
 import { ProductsService } from './services/products.service';
 import { BuyBtnComponent } from './components/buy-btn/buy-btn.component';
 import { CartItemComponent } from './components/cart-item/cart-item.component';
-import { ProductSectionComponent } from './components/product-section/product-section.component';
-import { CustomPipe } from './pipes/custom.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,9 +21,7 @@ import { CustomPipe } from './pipes/custom.pipe';
     CartPageComponent,
     NavBarComponent,
     BuyBtnComponent,
-    CartItemComponent,
-    ProductSectionComponent,
-    CustomPipe
+    CartItemComponent
   ],
   imports: [
     BrowserModule,

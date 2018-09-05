@@ -1,7 +1,6 @@
 import { CartService } from './../../services/cart.service';
 import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import { ProductsService } from '../../services/products.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart-item',
@@ -13,7 +12,7 @@ export class CartItemComponent implements OnInit {
   @Output() test = new EventEmitter();
   @Input() test2;
   @Output() test2Change = new EventEmitter();
-  constructor(private cs: CartService, private products: ProductsService, private router: Router) { }
+  constructor(private cs: CartService, private products: ProductsService) { }
 
   ngOnInit() {
   }
@@ -38,10 +37,6 @@ export class CartItemComponent implements OnInit {
 
   get product() {
     return this.products.getProductById(this.id);
-  }
-
-  public progNav() {
-    this.router.navigate(['/product', this.id]);
   }
 
 }

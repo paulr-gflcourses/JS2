@@ -9,22 +9,21 @@ export default new Vue({
       selectedDate: '',
       tasks: [],
 
-      defaultTasks: [
-        {
+      defaultTasks: [{
           date: new Date(2018, 0, 2),
-          task: ['one task for 8', 'two task for 8', 'three task for 8']
+          task: ['The first task', 'Another task', 'One more task..']
         },
         {
           date: new Date(2018, 1, 3),
-          task: ['one task for 8', 'two task for 8', 'three task for 8']
+          task: ['The first task', 'One more task..']
         },
         {
           date: new Date(2018, 2, 4),
-          task: ['one task for 8', 'two task for 8', 'three task for 8']
+          task: ['The first task']
         },
         {
           date: new Date(2018, 3, 5),
-          task: ['one task for 8', 'two task for 8', 'three task for 8']
+          task: ['The first task', 'Another task']
         },
 
         {
@@ -36,18 +35,16 @@ export default new Vue({
           task: ['one task...']
         },
         {
-          date: new Date(2018, 8, 8),
-          task: ['one task for 8', 'two task for 8', 'three task for 8']
+          date: new Date(2018, 8, 6),
+          task: ['Some task', 'One more task..']
         },
-        
-    ]
+      ]
 
     }
   },
 
-
-  created(){
-    let localTasks = JSON.parse(localStorage.getItem('tasks') || JSON.stringify(this.defaultTasks));
+  created() {
+    let localTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
     localTasks.forEach(element => {
       element.date = new Date(element.date)
     });
@@ -60,8 +57,8 @@ export default new Vue({
         localStorage.setItem('tasks', JSON.stringify(this.tasks || []));
       },
       deep: true
-  }
-},
+    }
+  },
 
   methods: {
 
@@ -71,14 +68,13 @@ export default new Vue({
       let year = d.getFullYear();
       let month = d.getMonth();
 
-      let nDays = new Date(year, month +1, 0).getDate();
+      let nDays = new Date(year, month + 1, 0).getDate();
       let firstDayOfWeek = this.getLocalDay(new Date(year, month, 1));
       let lastDayOfWeek = this.getLocalDay(new Date(year, month, nDays));
       let days = [];
       let weeks = []
 
-
-      for (let i = 1-firstDayOfWeek; i < nDays+(6-lastDayOfWeek) +1; i++) {
+      for (let i = 1 - firstDayOfWeek; i < nDays + (6 - lastDayOfWeek) + 1; i++) {
         days.push(new Date(yearDate, monthDate, i));
       }
 
@@ -91,34 +87,35 @@ export default new Vue({
 
     getLocalDay: function (date) {
       var day = date.getDay();
-      if (day == 0) { 
+      if (day == 0) {
         day = 7;
       }
       return day - 1;
     },
 
-    isEqualsDays(date1, date2){
-        if (date1 && date2){
-        return ((date1.getDate() === date2.getDate()) 
-           &&(date1.getMonth() === date2.getMonth())
-           &&(date1.getFullYear() === date2.getFullYear()))
-        }else{
-            return false
-        }
+    isEqualsDays(date1, date2) {
+      if (date1 && date2) {
+        return ((date1.getDate() === date2.getDate()) &&
+          (date1.getMonth() === date2.getMonth()) &&
+          (date1.getFullYear() === date2.getFullYear()))
+      } else {
+        return false
+      }
     },
 
-    isEqualsMonth(date1, date2){
-      if (date1 && date2){
-        return ((date1.getMonth() === date2.getMonth())
-           &&(date1.getFullYear() === date2.getFullYear()))
-        }else{
-            return false
-        }
+    isEqualsMonth(date1, date2) {
+      if (date1 && date2) {
+        return ((date1.getMonth() === date2.getMonth()) &&
+          (date1.getFullYear() === date2.getFullYear()))
+      } else {
+        return false
+      }
     },
 
-    getDayTasks(date){
-      let tasks = this.tasks.filter((day) => this.isEqualsDays(day.date, date));
-      if (tasks.length>0){
+    getDayTasks(date) {
+      let tasks = this.tasks.filter((day) =>
+        this.isEqualsDays(day.date, date));
+      if (tasks.length > 0) {
         return tasks[0].task;
       }
       return false;
