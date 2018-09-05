@@ -1,19 +1,22 @@
 <template>
-    <transition name="fade">
+
     <td class="day" 
-    v-bind:class="{ currentDay: isCurrentDay, 
-    selected: isDaySelected, hasTask: isTaskExists, notAvaiable: isNotAvaiable}"  
+    v-bind:class="{ 
+      restDay: isRestDay,
+      currentDay: isCurrentDay, 
+     hasTask: isTaskExists, 
+     notAvaiable: isNotAvaiable, 
+     selected: isDaySelected}"  
     v-on:click="$emit('select-day', date, tasks)"> 
-      <!-- {{day | deleteZeros}} -->
+
       {{ date | formatDate }} 
 
-     <!-- {{day}} -->
     </td>
-    </transition>
+
 </template>
 
 <script>
-import calendar from "../store/calendar";
+import calendar from "../calendar/calendar";
 
 export default {
   props: ["date"],
@@ -23,18 +26,19 @@ export default {
   },
 
   computed: {
-    /*date() {
-      let d = new Date(calendar.currentMonthDate);
-      d.setDate(this.day);
-      return d;
-    },*/
-
     tasks() {
       return calendar.getDayTasks(this.date);
     },
 
+    isRestDay() {
+      let dayOfWeek = calendar.getLocalDay(this.date);
+      if (dayOfWeek === 5 || dayOfWeek === 6) {
+        return true;
+      }
+      return false;
+    },
+
     isCurrentDay() {
-      //return (calendar.today == this.date)
       return calendar.isEqualsDays(calendar.today, this.date);
     },
     calendarCurrentDay() {
@@ -53,41 +57,17 @@ export default {
     },
 
     isNotAvaiable() {
-        return (! calendar.isEqualsMonth(this.date,calendar.currentMonthDate))
-      //return this.day == "0";
+      return !calendar.isEqualsMonth(this.date, calendar.currentMonthDate);
     }
   },
   methods: {},
   filters: {
-    formatDate(date){
-      return date.getDate()
-        //return date.getDate()+"."+(date.getMonth()+1)+"."+date.getFullYear();
+    formatDate(date) {
+      return date.getDate();
     }
   }
 };
 </script>
 
 <style>
-.currentDay {
-  font-weight: bold;
-  border: 4px solid rgb(57, 6, 124);
-  color: rgb(30, 8, 75);
-}
-
-.hasTask {
-  background: rgb(206, 189, 172);
-}
-
-.notAvaiable {
-  background: rgb(228, 226, 231);
-  color: rgb(148, 144, 156);
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
-  opacity: 0;
-}
 </style>

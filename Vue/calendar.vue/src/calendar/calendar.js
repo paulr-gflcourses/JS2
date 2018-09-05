@@ -28,15 +28,15 @@ export default new Vue({
         },
 
         {
-          date: new Date(2018, 7, 2),
+          date: new Date(2018, 8, 2),
           task: ['2 - to do one task', '2 - to do two task']
         },
         {
-          date: new Date(2018, 7, 4),
+          date: new Date(2018, 8, 4),
           task: ['one task...']
         },
         {
-          date: new Date(2018, 7, 8),
+          date: new Date(2018, 8, 8),
           task: ['one task for 8', 'two task for 8', 'three task for 8']
         },
         
@@ -47,9 +47,7 @@ export default new Vue({
 
 
   created(){
-    //let localTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
     let localTasks = JSON.parse(localStorage.getItem('tasks') || JSON.stringify(this.defaultTasks));
-    //this.tasks = localTasks || this.defaultTasks;
     localTasks.forEach(element => {
       element.date = new Date(element.date)
     });
@@ -64,15 +62,10 @@ export default new Vue({
       deep: true
   }
 },
-  computed: {
-    
 
-    
-  },
   methods: {
 
     currentMonthDays(yearDate, monthDate) {
-      //let d = this.currentMonthDate;
       let d = new Date(yearDate, monthDate, 1);
 
       let year = d.getFullYear();
@@ -88,7 +81,6 @@ export default new Vue({
       for (let i = 1-firstDayOfWeek; i < nDays+(6-lastDayOfWeek) +1; i++) {
         days.push(new Date(yearDate, monthDate, i));
       }
- 
 
       let nWeeks = Math.ceil(days.length / 7);
       for (let i = 0; i < nWeeks; i++) {
@@ -99,8 +91,7 @@ export default new Vue({
 
     getLocalDay: function (date) {
       var day = date.getDay();
-
-      if (day == 0) { // день 0 становится 7
+      if (day == 0) { 
         day = 7;
       }
       return day - 1;
@@ -115,6 +106,7 @@ export default new Vue({
             return false
         }
     },
+
     isEqualsMonth(date1, date2){
       if (date1 && date2){
         return ((date1.getMonth() === date2.getMonth())
@@ -130,8 +122,6 @@ export default new Vue({
         return tasks[0].task;
       }
       return false;
-
-     /* return ['task for'+date, 'task2 for'+date];*/
     }
 
   }

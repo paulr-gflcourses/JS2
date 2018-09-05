@@ -1,14 +1,15 @@
 <template>
-    <div class="calendar">
-        <hr/>
+    <div>
+       <div class="calendar">
         <div class="cal-head">
-          <button class="prev-month" @click="prevMonth"> prev </button>
+          <button class="prev-month" @click="prevMonth"> &larr; </button>
           <span class="show-date">{{ showedDate | formatDate}}</span>
-           <button class="next-month" @click="nextMonth"> next </button>
-          <div>
+           <button class="next-month" @click="nextMonth"> &rarr; </button>
 
-            Month
-            <select name="" id="" v-model="month">
+
+          <p>
+           <label for="month">Month</label>
+            <select name="" id="month" v-model="month">
             <option value="0">January</option>
              <option  value="1">February</option>
               <option  value="2">March</option>
@@ -22,30 +23,23 @@
                  <option value="10">November</option>
                  <option value="11">December</option>
 
-          </select>
-          Year
-          <input type="number" v-model="year"/>
-
+            </select>
+            <label for="year">Year</label>
+            <input type="number" v-model="year"/>
+          </p>
           
-          
-          </div>
-
-         
         </div>
 
         
 
     <table  border="1px"> 
-
         <tr>
             <td>Mon</td><td>Tue</td><td>Wed</td><td>Thu</td><td>Fri</td><td>Sat</td><td>Sun</td>
         </tr>
 
-        
         <tr
          v-for="(week, indexWeek) in daysArray" 
         :key="indexWeek">
-
 
         <day-item
             v-for="(date,index) in week" 
@@ -53,32 +47,32 @@
         :key="index"
         v-on:select-day="selectDay">
         </day-item>
-    
         </tr>
-       
-
     </table>
 
+    </div>
 
+    <div class="task-panel" v-if="dayChecked">
 
-    <div>
-
-      
-      
-
-
-        <div v-if="isDaySelected">
+        <div>
+          
           <h3>Add task</h3>
           Task name
           <input type="text" ref="taskName" name="" />
           <button @click="saveTask">Save</button>
         </div>
       
-      <ol v-if="tasks">
-        <h2>Tasks:</h2>
-        <li v-for="(task,index) in tasks" :key="index">{{task}}</li>
-      </ol>
-
+      
+      <p v-if="!tasks">No tasks for selected day ({{dayChecked | formatDateFull}}).</p>
+      <div v-else>
+        <h2>Tasks</h2>
+        <p>Date - {{dayChecked | formatDateFull}}</p>
+        <ol>
+          <li v-for="(task,index) in tasks" :key="index">{{task}}
+           
+          </li>
+        </ol>
+      </div>
     
 
     </div>
@@ -90,7 +84,7 @@
 
 
 <script>
-import calendar from "../store/calendar";
+import calendar from "../calendar/calendar";
 
 import DayItem from "./DayItem";
 
@@ -98,7 +92,6 @@ export default {
   data: function() {
     return {
       tasks: "",
-      //daysArray: calendar.currentMonthDays,
       day: calendar.today.getDate(),
       month: calendar.today.getMonth(),
       year: calendar.today.getFullYear()
@@ -125,60 +118,38 @@ export default {
   },
 
   computed: {
-    /* day: {
-      get: function() {
-        return calendar.currentMonthDate.getDate();
-      },
-
-      set: function(newValue) {
-        calendar.currentMonthDate.setDate(newValue);
-      }
-    },
-    month: {
-       get: function() {
-        return calendar.currentMonthDate.getMonth();
-      },
-
-      set: function(newValue) {
-        calendar.currentMonthDate.setMonth(newValue);
-      }
-    },
-    year: {
-       get: function() {
-        return calendar.currentMonthDate.getFullYear();
-      },
-
-      set: function(newValue) {
-        calendar.currentMonthDate.setFullYear(newValue);
-      }
-    },*/
- 
     showedDate() {
       return calendar.currentMonthDate;
+    },
+    dayChecked(){
+      return calendar.selectedDate;
     },
 
     daysArray() {
       return calendar.currentMonthDays(this.year, this.month);
     },
 
-    isDaySelected(){
-      return calendar.selectedDate;
-    }
+    
   },
 
   filters: {
     formatDate(date) {
       let options = { day: "2-digit", month: "short", year: "numeric" };
       return date.toLocaleDateString("en-US", options);
+    },
+    formatDateFull(date) {
+      let options = { day: "numeric", month: "long", year: "numeric" };
+      return date.toLocaleDateString("en-GB", options);
     }
   },
 
   methods: {
     selectDay(date, tasks) {
       calendar.selectedDate = date;
-      calendar.currentMonthDate = date;
-
-      this.tasks = tasks;
+      this.day = date.getDate();
+      this.month = date.getMonth();
+      this.year = date.getFullYear();
+      this.tasks =  calendar.getDayTasks(calendar.selectedDate);
     },
     nextMonth() {
       this.month = this.month + 1;
@@ -197,24 +168,34 @@ export default {
        date: new Date(calendar.selectedDate), 
        task:[taskName]
        });
-
-      //this.tasks=[taskName]
+       this.tasks =  calendar.getDayTasks(calendar.selectedDate);
       
       }
+     
       this.$refs.taskName.value="";
       
-    }
+    },
+
+
   }
 };
 </script>
 
 <style>
 .calendar {
-  /*background: rgb(17, 2, 53);*/
-  width: 350px;
-  margin-left: auto;
-  margin-right: auto;
-  /* color: #fff;*/
+
+  width: 355px;
+  margin-left: 40px;
+  margin-top: 40px;
+  border: 1px solid rgb(40, 40, 70);
+  padding: 15px;
+  float: left;
+}
+
+.task-panel{
+  margin-left: 50px;
+  margin-top: 50px;
+  float: left;
 }
 
 .prev-month {
@@ -226,9 +207,11 @@ export default {
 }
 
 .show-date {
-  border: 1px solid rgb(157, 157, 224);
+  border: 1px solid rgb(40, 40, 70);
+ background: rgb(228, 226, 231);
   text-align: center;
   margin-left: 26%;
+  padding: 5px;
 }
 
 td {
@@ -237,14 +220,35 @@ td {
 }
 
 .day {
-  /*background: rgb(39, 0, 131);*/
   background: rgb(189, 179, 207);
   padding: 15px;
   text-align: center;
 }
+
+.restDay{
+  background: rgb(214, 182, 200);
+}
+
+.hasTask {
+  background: rgb(206, 189, 172);
+}
+
+.notAvaiable {
+  background: rgb(228, 226, 231);
+  color: rgb(148, 144, 156);
+}
+
+.currentDay {
+  font-weight: bold;
+  border: 4px solid rgb(57, 6, 124);
+  color: rgb(30, 8, 75);
+}
+
 .day:hover {
   background: rgb(153, 153, 207);
 }
+
+
 
 .selected.day:hover,
 .selected {
@@ -255,7 +259,7 @@ td {
 .fade-leave-active {
   transition: opacity 0.5s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+.fade-enter, .fade-leave-to {
   opacity: 0;
 }
 </style>

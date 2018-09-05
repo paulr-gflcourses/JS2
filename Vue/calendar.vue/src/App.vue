@@ -1,47 +1,23 @@
 <template>
   <div id="app">
-    <!--div>
-      <p>runPath: {{ runPath }}</p>
-      <p>currentPath: {{ currentPath }}</p>
-      <p>fromPath: {{ fromPath }}</p>
-      <p>params: {{ params }}</p>
-    </div>
-    <NavigationBar/-->
-    <transition name="fade" mode="out-in">
-      <router-view/>
-    </transition>
+
+      <calendar-item></calendar-item>
+
+   
   </div>
 </template>
 
 <script>
-import NavigationBar from './components/NavigationBar';
+//import NavigationBar from './components/NavigationBar';
+import CalendarItem from './components/CalendarItem';
 export default {
   name: 'App',
-  data() {
-    return {
-      currentPath: '',
-      fromPath: '',
-      params: {}
-    }
-  },
-  created() {
-    this.currentPath = this.runPath;
-  },
+
   components: {
-    NavigationBar
+    CalendarItem,
   },
-  computed: {
-    runPath() {
-      return this.$router.currentRoute.path
-    }
-  },
-  watch: {
-    '$route' (to, from) {
-      this.currentPath = to.path;
-      this.fromPath = from.path;
-      this.params = to.params;
-    }
-  }
+
+  
 }
 </script>
 
