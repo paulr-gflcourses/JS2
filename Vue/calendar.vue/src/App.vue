@@ -3,12 +3,11 @@
 
       <calendar-item></calendar-item>
 
-   
   </div>
 </template>
 
 <script>
-//import NavigationBar from './components/NavigationBar';
+
 import CalendarItem from './components/CalendarItem';
 export default {
   name: 'App',
