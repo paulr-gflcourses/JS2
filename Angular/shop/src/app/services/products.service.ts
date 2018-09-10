@@ -23,6 +23,7 @@ export class ProductsService {
       this.list = data;
     });
   }
+  
 
   public getProductById(id) {
     return this.list.find(item => item.id === id);
