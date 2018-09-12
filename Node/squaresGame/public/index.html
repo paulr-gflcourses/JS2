@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <!--div id="chat">
+        <div>
+            {{ memory }}
+        </div>
+        <ul>
+            <li v-for="message in messages">
+                -------- <b><i>{{ message.username }}</i></b>:<br />
+                {{ message.message }}
+            </li>
+        </ul>
+        
+
+        <div v-if="online">
+            <h3>Online</h3>
+            <p>
+                <label for="msg">Message</label>
+                <input type="text" id="msg" v-model="newMessage">
+            </p>
+            <button @click="send">Send</button>
+
+            <button @click="disconnect">Disconnect</button>
+        </div>
+        <div v-else>
+            <h3>Offline</h3>
+            <button @click="connect">Connect</button>
+            <p>
+                <label for="name">Name</label>
+                <input type="text" id="name" v-model="username">
+            </p>
+        </div>
+
+
+
+
+    </div-->
+
+    <div id="chat">
+        <h1>Square game</h1>
+
+                <svg width="500" height="500">
+                    <rect :x="x" :y="y" width="50" height="50" style="fill:rgb(0,0,255);" />
+                </svg>
+        
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <!--script>
+        Vue.filter('disabled', function (val) { return val ? 'disabled' : '' });
+        var chatApp = new Vue({
+            el: '#chat',
+            data() {
+                return {
+                    username: '',
+                    messages: [],
+                    newMessage: '',
+                    online: false,
+                    memory: {}
+                }
+            },
+            created() {
+                this.connect();
+            },
+            destroyed() {
+                this.ws.close();
+            },
+            methods: {
+                send() {
+                    this.ws.send(JSON.stringify({
+                        message: this.newMessage,
+                        username: this.username
+                    }));
+                    this.newMessage = '';
+                },
+                messageHandler(message) {
+                    try {
+                        console.log(message.data)
+                        let data = JSON.parse(message.data);
+                        switch (data.type) {
+                            case 'messages':
+                                this.$set(this, 'messages', data.messages);
+                                break;
+                            case 'message':
+                                this.messages.push({ message: data.message, username: data.username });
+                                break;
+                            case 'memoryInfo':
+                                this.$set(this, 'memory', data.data)
+                        }
+                    } catch (e) { console.error(e) }
+                },
+                disconnect() {
+                    this.ws.close();
+                },
+                connect() {
+                    if (this.online) return false;
+                    this.ws = new WebSocket('ws://localhost:5555');
+                    this.ws.addEventListener('open', () => { this.online = true });
+                    this.ws.addEventListener('close', () => { this.online = false });
+                    this.ws.addEventListener('error', (err) => { console.error(err) });
+                    this.ws.addEventListener('message', this.messageHandler.bind(this));
+                }
+            }
+
+        })
+    </script-->
+
+    <script>
+         var canvas = document.getElementById('game');
+        // var ctx = canvas.getContext('2d');
+//         ctx.fillStyle = "black";
+// ctx.font="20px Georgia";
+// ctx.fillText("Hello World!",10,50);
+    </script>
+    <script>
+
+        var chatApp = new Vue({
+            el: '#chat',
+            data() {
+                return {
+                    online: false,
+                    x: 240,
+                    y: 250
+                }
+            },
+            created() {
+                // this.connect();
+                // this.drawSquare();
+
+            },
+            destroyed() {
+                // this.ws.close();
+            },
+            methods: {
+                drawSquare() {
+
+
+
+                    window.requestAnimationFrame(drawSquare);
+                },
+                // send() {
+                //     this.ws.send(JSON.stringify({
+                //         message: this.newMessage,
+                //         username: this.username
+                //     }));
+                //     this.newMessage = '';
+                // },
+                // messageHandler(message) {
+                //     try {
+                //         console.log(message.data)
+                //         let data = JSON.parse(message.data);
+                //         switch (data.type) {
+                //             case 'messages':
+                //                 this.$set(this, 'messages', data.messages);
+                //                 break;
+                //             case 'message':
+                //                 this.messages.push({ message: data.message, username: data.username });
+                //                 break;
+                //             case 'memoryInfo':
+                //                 this.$set(this, 'memory', data.data)
+                //         }
+                //     } catch (e) { console.error(e) }
+                // },
+                // disconnect() {
+                //     this.ws.close();
+                // },
+                connect() {
+                    if (this.online) return false;
+                    this.ws = new WebSocket('ws://localhost:5555');
+                    this.ws.addEventListener('open', () => { this.online = true });
+                    this.ws.addEventListener('close', () => { this.online = false });
+                    this.ws.addEventListener('error', (err) => { console.error(err) });
+                    //this.ws.addEventListener('message', this.messageHandler.bind(this));
+                }
+            }
+
+        })
+    </script-->
+</body>
+
+</html>
