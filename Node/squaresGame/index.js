@@ -1,11 +1,9 @@
 var http = require('http');
 var fs = require('fs');
-var url = require('url');
 var ws = require('ws');
 var server = new http.Server();
 
 server.on('request', (req, res) => {
-    let urlObj = url.parse(req.url, true);
     fs.readFile('./public/index.html', (err, data) => {
         res.end(data);
     });
@@ -14,50 +12,46 @@ server.listen(5000);
 
 var clients = {};
 
-var messages = {};
+var squares = {};
 var counter = 0;
 var wss = new ws.Server({
     port: 5555
 });
 
 wss.on('connection', (wsc, request) => {
+    let sendSquares = function(){
+        for (let cid in clients) {
+            let client = clients[cid];
+            client.send(JSON.stringify({
+                type: 'squares',
+                squares: squares
+            }));
+        }
+    }
+
     console.log(request.headers.cookie);
     let id = counter++;
     clients[id] = wsc;
-    wsc.on('message', (message) => {
-
-        message = JSON.parse(message);
-        messages[id] = {
-            x: message.x,
-            y: message.y,
-            color: message.color
+    wsc.on('message', (square) => {
+        square = JSON.parse(square);
+        squares[id] = {
+            x: square.x,
+            y: square.y,
+            color: square.color
         };
-        for (let cid in clients) {
-            let client = clients[cid];
-            client.send(JSON.stringify({
-                type: 'messages',
-                messages: messages
-            }));
-        }
-
+        sendSquares();
     });
 
     wsc.on('close', () => {
-        console.log('connect close');
+        console.log('closing connection');
         delete clients[id];
-        delete messages[id];
-        for (let cid in clients) {
-            let client = clients[cid];
-            client.send(JSON.stringify({
-                type: 'messages',
-                messages: messages
-            }));
-        }
+        delete squares[id];
+        sendSquares();
     })
 
     wsc.send(JSON.stringify({
-        type: 'messages',
-        messages
+        type: 'squares',
+        squares
     }));
 
 })

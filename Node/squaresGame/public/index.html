@@ -11,8 +11,7 @@
             margin: auto;
             width: 50%;
             height: 300px;
-            background: rgb(230, 235, 218);
-      
+            background: rgb(219, 228, 194);
         }
     </style>
 </head>
@@ -29,7 +28,7 @@
             </div>
             
             <svg   id="svg">
-                <rect v-for="client in messages" width="50" height="50" :x="client.x" :y="client.y" v-bind:style="{fill: client.color}" />
+                <rect v-for="client in squares" width="50" height="50" :x="client.x" :y="client.y" v-bind:style="{fill: client.color}" />
             </svg>
         </div>
     </div>
@@ -47,7 +46,7 @@
                         y: 100,
                         color: this.getRandomColor()
                     },
-                    messages: {}
+                    squares: {}
                 }
             },
 
@@ -75,9 +74,6 @@
             },
 
             methods: {
-                drawSquare() {
-                    window.requestAnimationFrame(drawSquare);
-                },
                 getRandomColor() {
                     return 'rgb(' + (Math.floor(Math.random() * 256)) +
                         ',' + (Math.floor(Math.random() * 256)) +
@@ -106,7 +102,7 @@
                 messageHandler(message) {
                     try {
                         let data = JSON.parse(message.data);
-                        this.$set(this, 'messages', data.messages);
+                        this.$set(this, 'squares', data.squares);
                     } catch (e) {
                         console.error(e)
                     }
@@ -126,7 +122,7 @@
                     });
                     this.ws.addEventListener('close', () => {
                         this.online = false;
-                        this.messages = {};
+                        this.squares = {};
                         this.sqare = {};
                     });
                     this.ws.addEventListener('error', (err) => {
