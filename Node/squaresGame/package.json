@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ssh2-streams": "^0.2.1",
     "ws": "^6.0.0"
   }
 }

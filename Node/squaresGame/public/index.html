@@ -27,7 +27,7 @@
                     <button v-else @click="connect">Connect</button>
             </div>
             
-            <svg   id="svg">
+            <svg id="svg">
                 <rect v-for="client in squares" width="50" height="50" :x="client.x" :y="client.y" v-bind:style="{fill: client.color}" />
             </svg>
         </div>
